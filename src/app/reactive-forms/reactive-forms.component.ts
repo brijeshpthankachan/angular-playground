@@ -40,5 +40,4 @@ export class ReactiveFormsComponent implements OnInit {
 
   buildForm = () => (this.carForm = this.fb.group({ names: this.fb.array([]) }));
 
-
 }

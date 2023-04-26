@@ -1,0 +1,14 @@
+
+
+
+<form [formGroup]="carForm" class="m-4" (ngSubmit)="submit()">
+  <div formArrayName="names">
+    <ng-container *ngFor="let item of names().controls; let i = index">
+      <input type="text" placeholder="names" [formControlName]="i">
+    </ng-container>
+  </div>
+  <button type="submit">Submit</button>
+</form>
+
+<button (click)="addName()">Add name +</button>
+<button (click)="remove(0)">Remove</button>

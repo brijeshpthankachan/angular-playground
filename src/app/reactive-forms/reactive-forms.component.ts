@@ -38,7 +38,6 @@ export class ReactiveFormsComponent implements OnInit {
 
   submit = () => console.log(this.carForm.value);
 
-  // for testing
   buildForm = () => (this.carForm = this.fb.group({ names: this.fb.array([]) }));
 
 

@@ -1,43 +1,53 @@
-import { Component, OnInit } from '@angular/core';
-import { DataStoreService } from '../data-store.service';
-import { ICars } from '../models';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core'
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms'
+import { ICars } from '@app/models'
+import { DataStoreService } from '@app/store'
 
 @Component({
-  selector: 'app-reactive-forms',
-  templateUrl: './reactive-forms.component.html',
-  styleUrls: ['./reactive-forms.component.scss']
+	selector: 'app-reactive-forms',
+	templateUrl: './reactive-forms.component.html',
+	styleUrls: ['./reactive-forms.component.scss']
 })
 export class ReactiveFormsComponent implements OnInit {
 
-  cars: ICars[] = [];
-  carForm: FormGroup = new FormGroup({});
+	cars: ICars[] = []
+	carForm: FormGroup = new FormGroup({})
 
-  constructor(private readonly store: DataStoreService, private readonly fb: FormBuilder) { }
+	constructor(private readonly store: DataStoreService, private readonly fb: FormBuilder) { }
 
-  ngOnInit(): void {
-    this.buildForm();
-    this.getCars();
-  }
+	ngOnInit() {
+		this.buildForm()
+		console.log(this.carForm)
+		this.getCars()
+	}
 
-  getCars = (): void => {
-    this.store.getCars().subscribe({
-      next: (cars) => {
-        this.cars = cars;
-        this.cars.map(({ carName }) => this.names().push(this.fb.control(carName)));
-      },
-      error: (err) => console.error(err),
-    });
-  };
+	getCars = (): void => {
+		this.store.getCars().subscribe(cars => {
+			this.cars = cars
+			this.cars.map(({ carName }) => this.names().push(this.fb.control(carName)))
+		})
+	}
 
-  names = (): FormArray => this.carForm.get('names') as FormArray;
+	names = () => this.carForm.get('skills') as FormArray
 
-  addName = () => this.names().push(this.fb.control(''));
+	address = ()  => this.carForm.get('address') as FormGroup
 
-  remove = (index: number) => this.names().removeAt(index);
+	add = () => this.names().push(this.fb.control(''))
 
-  submit = () => console.log(this.carForm.value);
+	remove = (index: number) => this.names().removeAt(index)
 
-  buildForm = () => (this.carForm = this.fb.group({ names: this.fb.array([]) }));
+	submit = () => console.log(this.carForm.value)
+
+	buildForm = () => (this.carForm = this.fb.group({
+		name: [],
+		dob: [],
+		band: [],
+		address: this.fb.group({
+			houseNo: [],
+			street: [],
+			zipCode: []
+		}),
+		skills: this.fb.array([])
+	}))
 
 }
